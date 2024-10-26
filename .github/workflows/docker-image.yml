@@ -55,8 +55,8 @@ jobs:
 
     - name: Run ECS Task
       run: |
-        TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition obj_det_task --query 'taskDefinition.taskDefinitionArn' --output text)
         aws ecs run-task \
           --cluster default \
           --task-definition obj_det_task \
-          --launch-type EC2
+          --launch-type EC2 \
+          --network-configuration "awsvpcConfiguration={subnets=[subnet-0ebd43bc88e9283a7],securityGroups=[sg-01976af17b1487013],assignPublicIp=ENABLED}"
