@@ -55,7 +55,8 @@ jobs:
 
     - name: Run ECS Task
       run: |
+        TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition obj_det_task --query 'taskDefinition.taskDefinitionArn' --output text)
         aws ecs run-task \
           --cluster default \
-          --task-definition ${{ steps.task-def.outputs.task-definition }} \
+          --task-definition obj_det_task \
           --launch-type EC2
