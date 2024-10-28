@@ -1,4 +1,9 @@
 name: cd-workflow
+on:
+  workflow_run:
+    workflows: [ "ci-workflow" ]
+    types:
+      - completed
 
 on:
   push:
@@ -27,7 +32,7 @@ jobs:
       env:
         REGISTRY: 211125733929.dkr.ecr.us-east-1.amazonaws.com
         REPOSITORY: object_detection_repo
-        IMAGE_TAG: object_detection
+        IMAGE_TAG: latest
       run: |
         docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
         
@@ -38,6 +43,6 @@ jobs:
       env:
         REGISTRY: 211125733929.dkr.ecr.us-east-1.amazonaws.com
         REPOSITORY: object_detection_repo
-        IMAGE_TAG: object_detection
+        IMAGE_TAG: latest
       run: |
         sudo docker run -d -p 8501:8501 --name object-detection $REGISTRY/$REPOSITORY:$IMAGE_TAG

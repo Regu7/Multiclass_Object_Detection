@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
 WORKDIR /app
 
 # Create necessary directories
-RUN mkdir -p artifacts/custom_yolov8_model4
+RUN mkdir -p artifacts/custom_yolov8_model4/weights
 
 # Copy application files
 COPY app.py .
-COPY artifacts/custom_yolov8_model4/weights artifacts/custom_yolov8_model4/weights
+COPY artifacts/custom_yolov8_model4/weights/best.pt artifacts/custom_yolov8_model4/weights/
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt

@@ -2,7 +2,7 @@ name: ci-workflow
 
 on:
   push:
-    branches: [ dev ] #[ main ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: object_detection_repo
-        IMAGE_TAG: object_detection
+        IMAGE_TAG: latest
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

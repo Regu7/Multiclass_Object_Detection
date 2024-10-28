@@ -1,15 +1,16 @@
-import streamlit as st
-from ultralytics import YOLO
+import io
+import os
 import cv2
 import numpy as np
+import streamlit as st
 from PIL import Image
-import io
+from ultralytics import YOLO
 
 
 def load_model():
     """Load YOLO model"""
     model = YOLO(
-        r"artifacts\custom_yolov8_model4\weights\best.pt"
+        os.path.join("artifacts", "custom_yolov8_model4", "weights", "best.pt")
     )  # you can change to your custom model path
     return model
 
