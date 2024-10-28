@@ -21,9 +21,7 @@ jobs:
         
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      with:
-        mask-password: 'false'
+      uses: aws-actions/amazon-ecr-login@v1
         
     - name: Pull docker image from Amazon ECR
       env:
@@ -31,7 +29,7 @@ jobs:
         REPOSITORY: object_detection_repo
         IMAGE_TAG: object_detection
       run: |
-        sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
         
     - name: Delete old container if exists
       run: sudo docker rm -f object-detection || true
