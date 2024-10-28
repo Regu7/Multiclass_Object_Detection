@@ -24,11 +24,22 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
         aws-region: us-east-1
 
-    - name: Login to ecr
-      run: aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 211125733929.dkr.ecr.us-east-1.amazonaws.com
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Pull docker image
-      run: docker pull 211125733929.dkr.ecr.us-east-1.amazonaws.com/object_detection_repo:latest
+    - name:  Pull docker image from Amazon ECR
+      env:
+        REGISTRY: 211125733929.dkr.ecr.us-east-1.amazonaws.com
+        REPOSITORY: object_detection_repo
+        IMAGE_TAG: latest
+      run: docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+    # - name: Login to ecr
+    #   run: aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 211125733929.dkr.ecr.us-east-1.amazonaws.com
+
+    # - name: Pull docker image
+    #   run: docker pull 211125733929.dkr.ecr.us-east-1.amazonaws.com/object_detection_repo:latest
       
     - name: Delete old container if exists
       run: sudo docker rm -f object-detection || true
