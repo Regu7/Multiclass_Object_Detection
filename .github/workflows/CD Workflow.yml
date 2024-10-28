@@ -1,0 +1,39 @@
+name: cd-workflow
+on:
+  workflow_run:
+    workflows: [ "ci-workflow" ]
+    types:
+      - completed
+
+jobs:
+
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY}}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
+    - name: Pull image to Amazon EC2
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: object_detection_repo
+        IMAGE_TAG: object_detection
+      run: |
+        docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Delete old container if exists
+      run: sudo docker rm -f object-detection || true
+
+    - name: Run new container
+      run: sudo docker run -p 8501:8501 --name object-detection $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
