@@ -27,6 +27,8 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
+      with:
+          mask-password: 'false'
 
     - name:  Pull docker image from Amazon ECR
       env:
