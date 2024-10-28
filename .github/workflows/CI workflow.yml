@@ -1,4 +1,4 @@
-name: Deploy to ECR and ECS
+name: ci-workflow
 
 on:
   push:
@@ -33,31 +33,31 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-    - name: Download task definition
-      run: |
-        aws ecs describe-task-definition --task-definition obj_det_task \
-        --query taskDefinition > task-definition.json
+    # - name: Download task definition
+    #   run: |
+    #     aws ecs describe-task-definition --task-definition obj_det_task \
+    #     --query taskDefinition > task-definition.json
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: object_detection_app
-        image: ${{ steps.login-ecr.outputs.registry }}/object_detection_repo:object_detection
+    # - name: Fill in the new image ID in the Amazon ECS task definition
+    #   id: task-def
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #     task-definition: task-definition.json
+    #     container-name: object_detection_app
+    #     image: ${{ steps.login-ecr.outputs.registry }}/object_detection_repo:object_detection
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        cluster: default
-        wait-for-service-stability: false
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+    #     cluster: default
+    #     wait-for-service-stability: false
 
-    - name: Run ECS Task
-      run: |
-        aws ecs run-task \
-          --cluster default \
-          --task-definition obj_det_task \
-          --launch-type EC2 \ 
+    # - name: Run ECS Task
+    #   run: |
+    #     aws ecs run-task \
+    #       --cluster default \
+    #       --task-definition obj_det_task \
+    #       --launch-type EC2 \ 
           --network-configuration "awsvpcConfiguration={subnets=[subnet-0ebd43bc88e9283a7],securityGroups=[sg-01976af17b1487013],assignPublicIp=ENABLED}"
           
