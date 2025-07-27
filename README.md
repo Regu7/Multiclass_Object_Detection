@@ -46,7 +46,6 @@ To ensure efficient development and deployment, we have implemented a comprehens
 
 The repository is structured as follows:
 
-```bash
 .
 ├── .github/                 # GitHub Actions workflows for CI/CD
 ├── artifacts/               # Stored model artifacts, weights, or example outputs
