@@ -42,20 +42,6 @@ To ensure efficient development and deployment, we have implemented a comprehens
 * **Dockerized Deployment:** Containerized application for consistent environments across development and production.
 * **AWS Integration:** Automated deployment to AWS ECR, ECS, and EC2 for scalable and reliable hosting.
 
-## Project Structure
-
-The repository is structured as follows:
-
-.
-├── .github/                 # GitHub Actions workflows for CI/CD
-├── artifacts/               # Stored model artifacts, weights, or example outputs
-├── notebooks/               # Jupyter notebooks for experimentation, data analysis, or model training
-├── .gitignore               # Specifies intentionally untracked files to ignore
-├── Dockerfile               # Defines the Docker image for the application
-├── README.md                # This README file
-├── app.py                   # Main application script for object detection inference
-└── requirements.txt         # Python dependencies required for the project
-
 ## Getting Started
 
 To get a local copy up and running, follow these simple steps.
